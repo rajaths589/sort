@@ -125,3 +125,48 @@ void sortByStraightInsertion_iter(int** keys, int N)
 		k[j+1] = current;
 	}
 }
+
+static int binaryCompare(int* sortedKeys, int start, int end, int search)
+{	
+	if((start+1)==end)
+	{
+		if(sortedKeys[start]<search)
+			return start+1;
+		else
+			return start;
+	}
+
+	int mid = (start+end)/2;
+	if(sortedKeys[mid] == search)
+		return mid;
+	else if(sortedKeys[mid] < search)
+		return binaryCompare(sortedKeys, mid+1, end);
+	else
+		return binaryCompare(sortedKeys, start, mid);
+}
+
+void sortByBinaryInsertion(int** keys, int N)
+{
+	assert(keys!=NULL);
+	assert(*keys!=NULL);
+	assert(N>0);
+
+	int i, j;
+	int current;
+	int* k = *keys;
+	int pos;
+
+	for(i=1; i<N; i++)
+	{
+		current = k[i];
+		pos = binaryCompare(k, 0, i, current);
+		for(j=i-1; j>=pos; j--)
+		{
+			if(k[j] <= current)
+				break;
+
+			k[j+1] = k[j];
+		}
+		k[pos] = current;
+	}
+}
