@@ -75,3 +75,53 @@ void sortByDistributionCounting(int** keys, int N, int startN, int endN)
 
 	*keys = sortedKeys;
 }
+
+static void straightInsertion_rec(int* keys, int start, int end)
+{
+	if(start==end)
+		return;
+
+	int current = keys[start];
+	int i = start-1;
+
+	while(i>=0 && keys[i]>current)
+	{
+		keys[i+1] = keys[i];
+		i--;
+	}
+	keys[i+1] = current;
+	straightInsertion_rec(keys, start+1, end);
+}
+
+void sortByStraightInsertion_rec(int** keys, int N)
+{
+	assert(keys!=NULL);
+	assert(*keys!=NULL);
+	assert(N>0);
+	
+	straightInsertion_rec(*keys, 1, N);
+}
+
+void sortByStraightInsertion_iter(int** keys, int N)
+{
+	assert(keys!=NULL);
+	assert(*keys!=NULL);
+	assert(N>0);
+
+	int i, j;
+	int current;
+	int* k = *keys;
+
+	for(i=1; i<N; i++)
+	{
+		current = k[i];
+		for(j=i-1; j>=0; j--)
+		{
+			if(k[j] <= current)
+				break;
+
+			k[j+1] = k[j];
+		}
+		k[j+1] = current;
+	}
+}
